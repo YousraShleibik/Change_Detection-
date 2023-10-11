@@ -26,9 +26,9 @@ def detect_changes(graph1, graph2):
     deleted_nodes = nodes1_set - nodes2_set
 
     if added_nodes:
-        changes['added_nodes'] = [dict(json.loads(node_str), color=[255, 255, 0]) for node_str in added_nodes]  # Yellow
+        changes['nodes'] = [dict(json.loads(node_str), color=[255, 255, 0]) for node_str in added_nodes]  # Yellow
     if deleted_nodes:
-        changes['deleted_nodes'] = [dict(json.loads(node_str), color=[128, 128, 128]) for node_str in deleted_nodes]  # Grey
+        changes['nodes'] = [dict(json.loads(node_str), color=[128, 128, 128]) for node_str in deleted_nodes]  # Grey
 
     edges1_set = set(json.dumps(edge, sort_keys=True) for edge in graph1['edges'])
     edges2_set = set(json.dumps(edge, sort_keys=True) for edge in graph2['edges'])
@@ -37,9 +37,9 @@ def detect_changes(graph1, graph2):
     deleted_edges = edges1_set - edges2_set
 
     if added_edges:
-        changes['added_edges'] = [dict(json.loads(edge_str), color=[255, 255, 0]) for edge_str in added_edges]  # Yellow
+        changes['edges'] = [dict(json.loads(edge_str), color=[255, 255, 0]) for edge_str in added_edges]  # Yellow
     if deleted_edges:
-        changes['deleted_edges'] = [dict(json.loads(edge_str), color=[128, 128, 128]) for edge_str in deleted_edges]  # Grey
+        changes['edges'] = [dict(json.loads(edge_str), color=[128, 128, 128]) for edge_str in deleted_edges]  # Grey
 
     return changes
 
@@ -49,7 +49,7 @@ def main():
     
     changes = detect_changes(graph1, graph2)
     
-    save_json(changes, 'changes_add_del.json')
+    save_json(changes, 'changes_add_del1.json')
 
 if __name__ == '__main__':
     main()
