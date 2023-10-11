@@ -44,12 +44,12 @@ def detect_changes(graph1, graph2):
     return changes
 
 def main():
-    graph1 = read_json('dsg_back_run2.json') #old graph 
-    graph2 = read_json('dsg_front_run2.json') #new graph 
+    graph1 = read_json('dsg_back_run1.json') #old graph 
+    graph2 = read_json('dsg_back_run2.json') #new graph 
     
     changes = detect_changes(graph1, graph2)
     
-    save_json(changes, 'changes_add_rn2_bf.json')
+    save_json(changes, 'changes_add_rn12_bb.json')
 
 if __name__ == '__main__':
     main()
