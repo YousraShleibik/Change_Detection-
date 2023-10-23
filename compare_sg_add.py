@@ -23,6 +23,7 @@ def detect_changes(graph1, graph2):
     nodes2_set = set(json.dumps(node, sort_keys=True) for node in graph2['nodes'])
 
     added_nodes = nodes2_set - nodes1_set
+    
     #deleted_nodes = nodes1_set - nodes2_set
 
     if added_nodes:
@@ -45,9 +46,10 @@ def detect_changes(graph1, graph2):
 
 def main():
     graph1 = read_json('dsg_back_run1.json') #old graph 
-    graph2 = read_json('dsg_back_run2.json') #new graph 
+    graph2 = read_json('dsg_front_run1.json') #new graph 
     
     changes = detect_changes(graph1, graph2)
+    #print("output of change",changes )
     
     save_json(changes, 'changes_add_rn12_bb.json')
 
