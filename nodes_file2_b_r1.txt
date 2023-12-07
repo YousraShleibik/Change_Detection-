@@ -1,0 +1,6 @@
+ID: None, Name: pole
+ID: None, Name: 
+ID: None, Name: vehicle
+ID: None, Name: building
+ID: None, Name: None
+ID: None, Name: object

@@ -48,52 +48,62 @@ def save_to_text_file(data, file_path):
         for line in data:
             file.write(f"{line}\n")
 
-def get_node_id_and_name(node):
-    node_id = node.get('id')
-    node_name = node.get('attributes', {}).get('name', 'No name')  # Adjusted for nested 'name'
-    return node_id, node_name
+
+def get_comparison_key(node):
+    # Extracts the 'id', 'position', and 'name' from the node's 'attributes', converting 'position' to a tuple
+    return (
+        node.get('attributes', {}).get('id'),
+        tuple(node.get('attributes', {}).get('position', [])),  # Convert 'position' to a tuple
+        node.get('attributes', {}).get('name')
+    )
 
 def process_files(file1_path, file2_path, output_file_path, text_file1, text_file2, added_nodes_file):
     graph1 = load_json(file1_path)
     graph2 = load_json(file2_path)
 
-    # Extract nodes and their IDs from both graphs
-    nodes1 = {node['id']: node for node in graph1['nodes']}
-    nodes2 = {node['id']: node for node in graph2['nodes']}
+    # Create dictionaries with comparison keys for both graphs
+    keys1 = {get_comparison_key(node): node for node in graph1['nodes']}
+    keys2 = {get_comparison_key(node): node for node in graph2['nodes']}
 
-    # Save nodes and their IDs to text files
-    save_to_text_file([f"ID: {id}, Name: {get_node_id_and_name(node)[1]}" for id, node in nodes1.items()], text_file1)
-    save_to_text_file([f"ID: {id}, Name: {get_node_id_and_name(node)[1]}" for id, node in nodes2.items()], text_file2)
+    # Identify added or changed nodes in graph2
+    added_or_changed_nodes = []
+    for key, node in keys2.items():
+        if key not in keys1:
+            added_or_changed_nodes.append(node)
 
-    # Find added nodes in graph2
-    #added_nodes = {id: node for id, node in nodes2.items() if id not in nodes1}
-
-    # Find added node IDs in graph2 (not present in graph1)
-    added_node_ids = set(nodes2.keys()) - set(nodes1.keys())
-
-    # Extract added nodes using their IDs
-    added_nodes = {node_id: nodes2[node_id] for node_id in added_node_ids}
-
-    
-
-
-    # Change color of added nodes to green in graph2 and save the modified graph
-    for node in added_nodes.values():
+    # Change color of added or changed nodes to green in graph2 and save the modified graph
+    for node in added_or_changed_nodes:
         if 'attributes' in node:
             node['attributes']['color'] = [0, 255, 0]  # RGB for green
 
     with open(output_file_path, 'w') as file:
         json.dump(graph2, file, indent=4)
 
-    # Save added nodes to a text file
-    save_to_text_file([f"ID: {id}, Name: {get_node_id_and_name(node)[1]}" for id, node in added_nodes.items()], added_nodes_file)
+  # Save nodes and their comparison keys to text files
+    save_to_text_file([f"ID: {key[0]}, Position: {key[1]}, Name: {key[2]}" for key in keys1.keys()], text_file1)
+    save_to_text_file([f"ID: {key[0]}, Position: {key[1]}, Name: {key[2]}" for key in keys2.keys()], text_file2)
+    save_to_text_file([f"ID: {get_comparison_key(node)[0]}, Position: {get_comparison_key(node)[1]}, Name: {get_comparison_key(node)[2]}" for node in added_or_changed_nodes], added_nodes_file)
+
+    # Save nodes and their comparison keys to text files
+    '''save_to_text_file([f"ID: {key[0]}, Name: {key[1]}" for key in keys1], text_file1)
+    save_to_text_file([f"ID: {key[0]}, Name: {key[1]}" for key in keys2], text_file2)
+    save_to_text_file([f"ID: {key[0]}, Name: {key[1]}" for key in added_keys], added_nodes_file)
+'''
+
+
+    # Find added nodes in graph2
+    #added_nodes = {id: node for id, node in nodes2.items() if id not in nodes1}
+
+
+
+
 
 # Usage
-file1_path = 'dsg_frontend_run1.json'
-file2_path = 'dsg_frontend_run2.json'
-output_file_path = 'modified_dsg_front_run2.json'
-text_file1 = 'nodes_file1.txt'
-text_file2 = 'nodes_file2.txt'
-added_nodes_file = 'added_nodes.txt'
+file1_path = 'dsg_backend_run1.json'
+file2_path = 'dsg_backend_run2.json'
+output_file_path = 'modified_dsg_back.json'
+text_file1 = 'nodes_file1_b_r1.txt'
+text_file2 = 'nodes_file2_b_r2.txt'
+added_nodes_file = 'added_nodes_b.txt'
 
 process_files(file1_path, file2_path, output_file_path, text_file1, text_file2, added_nodes_file)
