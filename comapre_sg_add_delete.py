@@ -49,7 +49,7 @@ def main():
     
     changes = detect_changes(graph1, graph2)
     
-    save_json(changes, 'changes_add_del1.json')
+    save_json(changes, 'changes_add_del2.json')
 
 if __name__ == '__main__':
     main()
