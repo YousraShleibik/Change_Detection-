@@ -44,8 +44,8 @@ def detect_changes(graph1, graph2):
     return changes
 
 def main():
-    graph1 = read_json('old-dsg.json')
-    graph2 = read_json('new-dsg.json')
+    graph1 = read_json('dsg_back_run1.json')
+    graph2 = read_json('dsg_back_run2.json')
     
     changes = detect_changes(graph1, graph2)
     
