@@ -66,8 +66,17 @@ def process_files(file1_path, file2_path, output_file_path, text_file1, text_fil
     save_to_text_file([f"ID: {id}, Name: {get_node_id_and_name(node)[1]}" for id, node in nodes2.items()], text_file2)
 
     # Find added nodes in graph2
-    added_nodes = {id: node for id, node in nodes2.items() if id not in nodes1}
+    #added_nodes = {id: node for id, node in nodes2.items() if id not in nodes1}
+
+    # Find added node IDs in graph2 (not present in graph1)
+    added_node_ids = set(nodes2.keys()) - set(nodes1.keys())
+
+    # Extract added nodes using their IDs
+    added_nodes = {node_id: nodes2[node_id] for node_id in added_node_ids}
+
     
+
+
     # Change color of added nodes to green in graph2 and save the modified graph
     for node in added_nodes.values():
         if 'attributes' in node:
@@ -80,9 +89,9 @@ def process_files(file1_path, file2_path, output_file_path, text_file1, text_fil
     save_to_text_file([f"ID: {id}, Name: {get_node_id_and_name(node)[1]}" for id, node in added_nodes.items()], added_nodes_file)
 
 # Usage
-file1_path = 'dsg_obj_backend_run1.json'
-file2_path = 'dsg_obj_backend_run2.json'
-output_file_path = 'modified_dsg_obj_backend_run2.json'
+file1_path = 'dsg_frontend_run1.json'
+file2_path = 'dsg_frontend_run2.json'
+output_file_path = 'modified_dsg_front_run2.json'
 text_file1 = 'nodes_file1.txt'
 text_file2 = 'nodes_file2.txt'
 added_nodes_file = 'added_nodes.txt'
