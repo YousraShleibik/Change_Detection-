@@ -33,9 +33,9 @@ def modify_and_save_graph(file1, file2, output_file):
         json.dump(graph2, file)
 
 # File paths for the input and output files
-input_file1 = 'dsg_back_run1.json'  # Replace with actual file path
-input_file2 = 'dsg_back_run2.json'  # Replace with actual file path
-output_file = 'path_to_output_file.json'  # Replace with actual file path
+input_file1 = 'dsg_obj_backend_run1.json'  # Replace with actual file path
+input_file2 = 'dsg_obj_backend_run2.json'  # Replace with actual file path
+output_file = 'object_backend_run1_2.json'  # Replace with actual file path
 
 # Run the function with the specified file paths
 modify_and_save_graph(input_file1, input_file2, output_file)
